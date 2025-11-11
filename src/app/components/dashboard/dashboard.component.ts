@@ -1,24 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-const routes: Routes = [
-  // Page de connexion
-  { path: 'login', component: LoginComponent },
-
-  // Page après connexion
-  { path: 'dashboard', component: DashboardComponent }, // TODO: Protéger cette route
-
-  // Rediriger par défaut vers la page de login
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-  // Rediriger toute autre route inconnue
-  { path: '**', redirectTo: '/login' }
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class AppRoutingModule { }
+export class DashboardComponent {
+  title = 'Tableau de bord';
+
+  constructor() { }
+}
