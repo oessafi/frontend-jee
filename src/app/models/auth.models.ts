@@ -4,15 +4,24 @@ export interface AuthRequest {
   password: string;
 }
 
-// Correspond à AuthResponse.java
+// Correspond à AuthResponse.java (modifiée)
 export interface AuthResponse {
   token: string;
+  user: UserDTO; // <-- AJOUTÉ
 }
 
-// Représente l'utilisateur retourné par /users/me
+// Représente le UserDTO.java du backend
 export interface UserDTO {
-  id?: number;
-  email?: string;
-  // le backend expose le rôle principal sous 'role'
-  role: string;
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  role: string; // Ex: "DOCTORANT", "PERSONNEL_ADMIN"
+  status: string;
+  specialty: string;
+  laboratory: string;
+  studentId: string;
+  createdAt: string; // ou Date
+  updatedAt: string; // ou Date
 }

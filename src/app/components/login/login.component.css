@@ -1,29 +1,57 @@
+/* ====== Structure générale ====== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f7f6;
+  background: linear-gradient(135deg, #007bff, #0056d2);
+  font-family: "Poppins", sans-serif;
 }
 
-form {
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  width: 350px;
+/* ====== Carte ====== */
+.login-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 380px;
+  padding: 2rem 2.5rem;
   text-align: center;
+  animation: fadeIn 0.4s ease;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ====== Logo ====== */
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+}
+
+/* ====== Titre ====== */
 h2 {
-  color: #333;
+  margin: 0.3rem 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #222;
 }
 
-p {
-  color: #777;
+.subtitle {
+  font-size: 0.9rem;
+  color: #666;
   margin-bottom: 1.5rem;
 }
 
+/* ====== Champs ====== */
 .form-group {
   text-align: left;
   margin-bottom: 1rem;
@@ -31,39 +59,126 @@ p {
 
 label {
   display: block;
-  margin-bottom: 0.5rem;
   font-weight: 600;
+  color: #333;
+  margin-bottom: 0.4rem;
 }
 
 input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box; /* Important */
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  outline: none;
 }
 
 input.invalid {
-  border-color: red;
+  border-color: #e74c3c;
 }
 
-button {
+.error-text {
+  font-size: 0.85rem;
+  color: #e74c3c;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+/* ====== Options ====== */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.checkbox-label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.forgot-link {
+  font-size: 0.9rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* ====== Bouton ====== */
+.submit-btn {
   width: 100%;
-  padding: 0.75rem;
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.8rem;
   border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
+  border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-button:disabled {
-  background-color: #ccc;
+.submit-btn:hover:not(:disabled) {
+  background: #0056d2;
+  transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+  background: #ccc;
   cursor: not-allowed;
 }
 
-.error-message {
-  color: red;
+/* ====== Message d’erreur ====== */
+.alert-error {
+  background: #fdecea;
+  color: #d32f2f;
+  border-radius: 8px;
+  padding: 0.75rem;
   margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* ====== Footer ====== */
+.card-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.card-footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.card-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 420px) {
+  .login-card {
+    width: 90%;
+    padding: 1.5rem;
+  }
 }

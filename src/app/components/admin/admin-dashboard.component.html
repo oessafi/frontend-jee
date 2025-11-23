@@ -1,5 +1,38 @@
-<section class="admin-dashboard">
-  <h2>{{ title }}</h2>
-  <p>Bienvenue sur l'espace du personnel administratif.</p>
-  <!-- Widgets et contrôles pour l'administration -->
+<section class="dashboard admin-dashboard">
+  <header class="dashboard-header">
+    <div>
+      <h1>{{ title }}</h1>
+      <p class="subtitle">Bienvenue sur l'espace du personnel administratif.</p>
+    </div>
+    <div class="header-actions">
+      <div class="profile-pill">Admin</div>
+    </div>
+  </header>
+
+  <div class="stats-grid">
+    <article class="card stat" *ngFor="let s of stats">
+      <div class="stat-value">{{ s.value }}</div>
+      <div class="stat-label">{{ s.label }}</div>
+    </article>
+  </div>
+
+  <div class="content-grid">
+    <section class="card quick-actions">
+      <h3>Actions</h3>
+      <div class="actions-grid">
+        <a class="action" *ngFor="let a of actions" [routerLink]="a.link">{{ a.label }}</a>
+      </div>
+    </section>
+
+    <section class="card recent">
+      <h3>Activité récente</h3>
+      <ul>
+        <li *ngFor="let r of recent">
+          <strong>{{ r.title }}</strong>
+          <div class="muted">{{ r.date }}</div>
+          <div class="small">{{ r.desc }}</div>
+        </li>
+      </ul>
+    </section>
+  </div>
 </section>

@@ -30,47 +30,37 @@ export class LoginComponent {
       return;
     }
 
+    this.errorMessage = ''; // Réinitialiser l'erreur
     const credentials = this.loginForm.value;
+
     this.auth.login(credentials).subscribe({
       next: (res) => {
-        // res should contain { token: '...' }
-        const token = (res as any)?.token;
-        if (!token) {
-          this.errorMessage = 'Réponse invalide du serveur (pas de token)';
-          return;
-        }
-        // Si le backend renvoie déjà l'utilisateur dans la réponse de login, utilise son rôle
-        const backendUserRole = (res as any)?.user?.role;
+        // res contient { token: '...', user: {...} }
+        const backendUserRole = res?.user?.role;
+
         if (backendUserRole) {
           const normalized = this.normalizeRole(backendUserRole);
           this.redirectByRole(normalized);
-          return;
+        } else {
+          // Si la réponse est invalide (pas de user ou pas de rôle)
+          this.errorMessage = 'Réponse invalide du serveur.';
+          this.auth.logout(); // Nettoyer au cas où
         }
-
-        // Sinon, récupérer l'utilisateur courant depuis le backend (/users/me) et rediriger selon le rôle
-        this.auth.getCurrentUser().subscribe({
-          next: (user: any) => {
-            const role = user?.role;
-            if (role) {
-              const normalized = this.normalizeRole(role);
-              this.redirectByRole(normalized);
-            } else {
-              this.router.navigate(['/login']);
-            }
-          },
-          error: (err) => {
-            console.error('Impossible de récupérer l\'utilisateur courant', err);
-            this.errorMessage = 'Échec de la connexion';
-          }
-        });
       },
       error: (err) => {
         console.error('Login failed', err);
-        this.errorMessage = 'Échec de la connexion';
+        // Affiche le message d'erreur renvoyé par le backend si présent
+        const backendMessage = err?.error?.message || err?.error || null;
+        if (backendMessage) {
+          this.errorMessage = String(backendMessage);
+        } else if (err?.status) {
+          this.errorMessage = `Erreur ${err.status} - ${err.statusText || 'Connexion refusée'}`;
+        } else {
+          this.errorMessage = 'Échec de la connexion';
+        }
       }
     });
   }
-
   private redirectByRole(role: string): void {
     switch (role) {
       case 'ROLE_DOCTORANT':

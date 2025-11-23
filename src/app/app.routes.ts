@@ -2,15 +2,39 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DoctorantDashboardComponent } from './components/doctorant/doctorant-dashboard.component';
+import { InscriptionComponent } from './components/doctorant/inscription.component';
+import { UploadDocsComponent } from './components/doctorant/upload-docs.component';
+import { DossierStatusComponent } from './components/doctorant/dossier-status.component';
+import { SoutenanceRequestComponent } from './components/doctorant/soutenance-request.component';
 import { EncadrantDashboardComponent } from './components/encadrant/encadrant-dashboard.component';
+import { NotificationsComponent } from './components/encadrant/notifications.component';
+import { ValidateDossierComponent } from './components/encadrant/validate-dossier.component';
+import { ProposeJuryComponent } from './components/encadrant/propose-jury.component';
+import { SuperviseesComponent } from './components/encadrant/supervisees.component';
 import { AdminDashboardComponent } from './components/admin/admin-dashboard.component';
+import { CampaignsComponent } from './components/admin/campaigns.component';
+import { ValidateDossiersComponent } from './components/admin/validate-dossiers.component';
+import { PlanningComponent } from './components/admin/planning.component';
+import { UserManagementComponent } from './components/admin/user-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'doctorant/dashboard', component: DoctorantDashboardComponent },
+  { path: 'doctorant/inscription', component: InscriptionComponent },
+  { path: 'doctorant/upload-docs', component: UploadDocsComponent },
+  { path: 'doctorant/dossier-status', component: DossierStatusComponent },
+  { path: 'doctorant/soutenance-request', component: SoutenanceRequestComponent },
   { path: 'encadrant/dashboard', component: EncadrantDashboardComponent },
+  { path: 'encadrant/notifications', component: NotificationsComponent },
+  { path: 'encadrant/validate-dossier', component: ValidateDossierComponent },
+  { path: 'encadrant/propose-jury', component: ProposeJuryComponent },
+  { path: 'encadrant/supervisees', component: SuperviseesComponent },
   { path: 'admin/dashboard', component: AdminDashboardComponent },
+  { path: 'admin/campaigns', component: CampaignsComponent },
+  { path: 'admin/validate-dossiers', component: ValidateDossiersComponent },
+  { path: 'admin/planning', component: PlanningComponent },
+  { path: 'admin/users', component: UserManagementComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];
