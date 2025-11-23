@@ -1,5 +1,13 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { User } from '../../models/app.models';
+
+export interface UserManagementUser extends User {
+  isActive: boolean;
+  createdAt: string;
+}
+
 
 @Component({
   selector: 'app-user-management',
@@ -10,4 +18,5 @@ import { CommonModule } from '@angular/common';
 })
 export class UserManagementComponent {
   title = 'Gestion des comptes utilisateurs';
+  users: UserManagementUser[] = [];
 }

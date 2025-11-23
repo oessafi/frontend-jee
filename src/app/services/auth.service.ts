@@ -3,20 +3,26 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import * as jwt_decode from 'jwt-decode';
-import { AuthRequest, AuthResponse, UserDTO } from '../models/auth.models';
+import { AuthResponse, User } from '../models/app.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '/api'; 
+  private apiUrl = 'http://localhost:8080/api/v1';
   private tokenKey = 'token';
-  private userKey = 'currentUser'; 
+  private userKey = 'user';
+
+  /**
+   * Getter pour l'utilisateur courant (compatible avec le composant)
+   */
+  get user$(): User | null {
+    return this.getCurrentUserFromStorage();
+  }
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(credentials: AuthRequest): Observable<AuthResponse> { 
-    // POST /api/users/login (utiliser /users/login au lieu de /auth/login)
+  login(credentials: { email: string; password: string }): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/users/login`, credentials).pipe(
       tap((response: AuthResponse) => {
         if (response && response.token && response.user) {
@@ -27,14 +33,18 @@ export class AuthService {
     );
   }
 
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users/register`, data);
+  }
+
   /**
    * Récupère l'utilisateur depuis le localStorage
    */
-  getCurrentUserFromStorage(): UserDTO | null {
+  getCurrentUserFromStorage(): User | null {
     const userString = localStorage.getItem(this.userKey);
     if (!userString) return null;
     try {
-      return JSON.parse(userString) as UserDTO;
+      return JSON.parse(userString) as User;
     } catch (e) {
       console.error('Erreur parsing utilisateur localStorage', e);
       return null;

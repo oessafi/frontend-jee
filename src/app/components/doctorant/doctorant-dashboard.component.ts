@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { InscriptionService } from '../../services/inscription.service';
+import { SoutenanceService } from '../../services/soutenance.service';
+import { User, Inscription } from '../../models/app.models';
 
 @Component({
   selector: 'app-doctorant-dashboard',
@@ -9,26 +13,48 @@ import { RouterModule } from '@angular/router';
   templateUrl: './doctorant-dashboard.component.html',
   styleUrls: ['./doctorant-dashboard.component.css']
 })
-export class DoctorantDashboardComponent {
+export class DoctorantDashboardComponent implements OnInit {
   title = 'Tableau de bord';
+  user: User | null = null;
+  inscriptions: Inscription[] = [];
+  latestInscription: Inscription | null = null;
+  loading = true;
+  error: string | null = null;
 
-  // Sample stats and content to show in the improved UI. Replace with real API data later.
-  stats = [
-    { label: 'Dossiers soumis', value: 5 },
-    { label: 'Documents à télécharger', value: 2 },
-    { label: 'Soutenances proposées', value: 1 },
-    { label: "Messages non lus", value: 3 }
-  ];
+  constructor(
+    private authService: AuthService,
+    private inscriptionService: InscriptionService,
+    private soutenanceService: SoutenanceService,
+    private router: Router
+  ) {}
 
-  actions = [
-    { label: "S'inscrire", link: ['/doctorant/inscription'] },
-    { label: 'Téléverser docs', link: ['/doctorant/upload-docs'] },
-    { label: 'Voir statut', link: ['/doctorant/dossier-status'] },
-    { label: 'Demande soutenance', link: ['/doctorant/soutenance-request'] }
-  ];
+  ngOnInit(): void {
+    this.user = this.authService.user$();
+    if (this.user?.id) {
+      this.inscriptionService.getMyInscriptions(this.user.id).subscribe({
+        next: (data) => {
+          this.inscriptions = data;
+          this.latestInscription = this.inscriptions.length > 0
+            ? this.inscriptions[this.inscriptions.length - 1]
+            : null;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Erreur lors du chargement des inscriptions';
+          this.loading = false;
+        }
+      });
+    } else {
+      this.loading = false;
+      this.error = 'Utilisateur non connecté';
+    }
+  }
 
-  recent = [
-    { title: 'CV téléchargé', date: '2025-11-10', desc: 'Votre CV a été ajouté au dossier.' },
-    { title: 'Convocation soutenance', date: '2025-10-01', desc: 'Une proposition de soutenance est disponible.' }
-  ];
+  hasActiveInscription(): boolean {
+    return !!this.latestInscription && this.latestInscription.status !== 'BROUILLON';
+  }
+
+  onNewInscription(): void {
+    this.router.navigate(['/doctorant/inscription']);
+  }
 }
