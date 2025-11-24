@@ -1,15 +1,10 @@
-
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { InscriptionService } from '../../services/inscription.service';
 import { Inscription } from '../../models/app.models';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-validate-dossiers',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './validate-dossiers.component.html',
   styleUrls: ['./validate-dossiers.component.css']
 })
@@ -17,18 +12,16 @@ export class ValidateDossiersComponent implements OnInit {
   inscriptions: Inscription[] = [];
   loading = false;
   error: string | null = null;
-  selectedInscription: Inscription | null = null;
-  showDetails = false;
+  showRejectFormId: string | null = null;
   rejectForm: FormGroup;
-  showRejectForm = false;
+  title = 'Validation des dossiers';
 
   constructor(
     private inscriptionService: InscriptionService,
-    private router: Router,
     private fb: FormBuilder
   ) {
     this.rejectForm = this.fb.group({
-      commentaire: ['', Validators.required]
+      commentaireAdmin: ['', Validators.required]
     });
   }
 
@@ -50,22 +43,9 @@ export class ValidateDossiersComponent implements OnInit {
     });
   }
 
-  openDetails(inscription: Inscription): void {
-    this.selectedInscription = inscription;
-    this.showDetails = true;
-    this.showRejectForm = false;
-  }
-
-  closeDetails(): void {
-    this.selectedInscription = null;
-    this.showDetails = false;
-    this.showRejectForm = false;
-  }
-
   validateInscription(inscription: Inscription): void {
     this.inscriptionService.validate(inscription.id, { approved: true, commentaire: '' }).subscribe({
       next: () => {
-        this.closeDetails();
         this.loadInscriptions();
       },
       error: () => {
@@ -74,19 +54,17 @@ export class ValidateDossiersComponent implements OnInit {
     });
   }
 
-  showReject(inscription: Inscription): void {
-    this.selectedInscription = inscription;
-    this.showRejectForm = true;
-    this.showDetails = false;
+  showRejectForm(inscriptionId: string): void {
+    this.showRejectFormId = inscriptionId;
     this.rejectForm.reset();
   }
 
-  rejectInscription(): void {
-    if (!this.selectedInscription || this.rejectForm.invalid) return;
-    const commentaire = this.rejectForm.value.commentaire;
-    this.inscriptionService.validate(this.selectedInscription.id, { approved: false, commentaire }).subscribe({
+  rejectInscription(inscription: Inscription): void {
+    if (this.rejectForm.invalid) return;
+    const commentaire = this.rejectForm.value.commentaireAdmin;
+    this.inscriptionService.validate(inscription.id, { approved: false, commentaire }).subscribe({
       next: () => {
-        this.closeDetails();
+        this.showRejectFormId = null;
         this.loadInscriptions();
       },
       error: () => {

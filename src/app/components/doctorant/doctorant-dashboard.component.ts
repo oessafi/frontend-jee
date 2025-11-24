@@ -20,6 +20,9 @@ export class DoctorantDashboardComponent implements OnInit {
   latestInscription: Inscription | null = null;
   loading = true;
   error: string | null = null;
+  stats: any[] = [];
+  actions: any[] = [];
+  recent: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -29,7 +32,7 @@ export class DoctorantDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.user$();
+    this.user = this.authService.user$;
     if (this.user?.id) {
       this.inscriptionService.getMyInscriptions(this.user.id).subscribe({
         next: (data) => {

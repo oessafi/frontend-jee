@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -37,7 +36,7 @@ export class InscriptionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user = this.authService.user$();
+    this.user = this.authService.user$;
   }
 
   onSubmit(): void {

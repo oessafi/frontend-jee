@@ -4,12 +4,6 @@ export interface AuthRequest {
   password: string;
 }
 
-// Correspond à AuthResponse.java (modifiée)
-export interface AuthResponse {
-  token: string;
-  user: UserDTO; // <-- AJOUTÉ
-}
-
 // Représente le UserDTO.java du backend
 export interface UserDTO {
   id: string;
@@ -19,9 +13,15 @@ export interface UserDTO {
   phone: string;
   role: string; // Ex: "DOCTORANT", "PERSONNEL_ADMIN"
   status: string;
-  specialty: string;
-  laboratory: string;
-  studentId: string;
-  createdAt: string; // ou Date
-  updatedAt: string; // ou Date
+  specialty?: string;   // Optionnel car null pour ADMIN
+  laboratory?: string;  // Optionnel car null pour ADMIN
+  studentId?: string;   // Optionnel car null pour ADMIN/PROF
+  createdAt: string;    // Format "yyyy-MM-dd HH:mm:ss"
+  updatedAt: string;    // Format "yyyy-MM-dd HH:mm:ss"
+}
+
+// Correspond à AuthResponse.java
+export interface AuthResponse {
+  token: string;
+  user: UserDTO;
 }

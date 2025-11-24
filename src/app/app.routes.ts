@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DoctorantDashboardComponent } from './components/doctorant/doctorant-dashboard.component';
@@ -20,21 +21,21 @@ import { UserManagementComponent } from './components/admin/user-management.comp
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'doctorant/dashboard', component: DoctorantDashboardComponent },
-  { path: 'doctorant/inscription', component: InscriptionComponent },
-  { path: 'doctorant/upload-docs', component: UploadDocsComponent },
-  { path: 'doctorant/dossier-status', component: DossierStatusComponent },
-  { path: 'doctorant/soutenance-request', component: SoutenanceRequestComponent },
-  { path: 'encadrant/dashboard', component: EncadrantDashboardComponent },
-  { path: 'encadrant/notifications', component: NotificationsComponent },
-  { path: 'encadrant/validate-dossier', component: ValidateDossierComponent },
-  { path: 'encadrant/propose-jury', component: ProposeJuryComponent },
-  { path: 'encadrant/supervisees', component: SuperviseesComponent },
-  { path: 'admin/dashboard', component: AdminDashboardComponent },
-  { path: 'admin/campaigns', component: CampaignsComponent },
-  { path: 'admin/validate-dossiers', component: ValidateDossiersComponent },
-  { path: 'admin/planning', component: PlanningComponent },
-  { path: 'admin/users', component: UserManagementComponent },
+  { path: 'doctorant/dashboard', component: DoctorantDashboardComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_DOCTORANT' } },
+  { path: 'doctorant/inscription', component: InscriptionComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_DOCTORANT' } },
+  { path: 'doctorant/upload-docs', component: UploadDocsComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_DOCTORANT' } },
+  { path: 'doctorant/dossier-status', component: DossierStatusComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_DOCTORANT' } },
+  { path: 'doctorant/soutenance-request', component: SoutenanceRequestComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_DOCTORANT' } },
+  { path: 'encadrant/dashboard', component: EncadrantDashboardComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ENCADRANT' } },
+  { path: 'encadrant/notifications', component: NotificationsComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ENCADRANT' } },
+  { path: 'encadrant/validate-dossier', component: ValidateDossierComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ENCADRANT' } },
+  { path: 'encadrant/propose-jury', component: ProposeJuryComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ENCADRANT' } },
+  { path: 'encadrant/supervisees', component: SuperviseesComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ENCADRANT' } },
+  { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ADMINISTRATIF' } },
+  { path: 'admin/campaigns', component: CampaignsComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ADMINISTRATIF' } },
+  { path: 'admin/validate-dossiers', component: ValidateDossiersComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ADMINISTRATIF' } },
+  { path: 'admin/planning', component: PlanningComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ADMINISTRATIF' } },
+  { path: 'admin/users', component: UserManagementComponent, canActivate: [AuthGuard], data: { roles: 'ROLE_ADMINISTRATIF' } },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];

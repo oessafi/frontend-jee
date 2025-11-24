@@ -1,19 +1,16 @@
-
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SoutenanceService } from '../../services/soutenance.service';
 
 export enum JuryRole {
-  RAPPORTEUR = 'RAPPORTEUR',
-  EXAMINATEUR = 'EXAMINATEUR',
   PRESIDENT = 'PRESIDENT',
-  DIRECTEUR_THESE = 'DIRECTEUR_THESE'
+  RAPPORTEUR = 'RAPPORTEUR',
+  EXAMINATEUR = 'EXAMINATEUR'
 }
 
 export interface JuryMember {
-  nomComplet: string;
+  nom: string;
   email: string;
   etablissement: string;
   role: JuryRole;
@@ -25,17 +22,16 @@ export interface PropositionJuryRequest {
 
 @Component({
   selector: 'app-propose-jury',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './propose-jury.component.html',
   styleUrls: ['./propose-jury.component.css']
 })
 export class ProposeJuryComponent implements OnInit {
   demandeId!: string;
   juryForm: FormGroup;
+  juryRoles = Object.values(JuryRole);
   successMessage: string | null = null;
   errorMessage: string | null = null;
-  juryRoles = Object.values(JuryRole);
+  title = 'Proposer un jury';
 
   constructor(
     private fb: FormBuilder,
@@ -58,7 +54,7 @@ export class ProposeJuryComponent implements OnInit {
 
   addMember(): void {
     this.membres.push(this.fb.group({
-      nomComplet: ['', Validators.required],
+      nom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       etablissement: ['', Validators.required],
       role: ['', Validators.required]

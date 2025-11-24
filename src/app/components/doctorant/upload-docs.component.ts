@@ -1,6 +1,6 @@
-
-
-import { Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { InscriptionService } from '../../services/inscription.service';
 import { HttpEventType } from '@angular/common/http';
 
 export enum DocumentType {
@@ -54,7 +54,7 @@ export class UploadDocsComponent {
     const fileToSend = new File([this.selectedFile], this.selectedType + '.pdf', { type: 'application/pdf' });
 
     this.inscriptionService.uploadDocument(this.inscriptionId, fileToSend).subscribe({
-      next: (event) => {
+      next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress && event.total) {
           this.uploadProgress = Math.round((event.loaded / event.total) * 100);
         } else if (event.type === HttpEventType.Response) {

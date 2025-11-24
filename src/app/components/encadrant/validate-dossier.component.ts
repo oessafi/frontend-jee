@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InscriptionService } from '../../services/inscription.service';
@@ -21,6 +20,7 @@ export class ValidateDossierComponent implements OnInit {
   selectedInscription: Inscription | null = null;
   showRejectForm = false;
   rejectForm: FormGroup;
+  title = 'Validation du dossier';
 
   constructor(
     private inscriptionService: InscriptionService,
@@ -33,7 +33,7 @@ export class ValidateDossierComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user = this.authService.user$();
+    this.user = this.authService.user$;
     if (this.user?.id) {
       this.loadInscriptions();
     }

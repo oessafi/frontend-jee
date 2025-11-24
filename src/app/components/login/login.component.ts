@@ -61,35 +61,13 @@ export class LoginComponent {
       }
     });
   }
-  private redirectByRole(role: string): void {
-    switch (role) {
-      case 'ROLE_DOCTORANT':
-        this.router.navigate(['/doctorant/dashboard']);
-        break;
-      case 'ROLE_ENCADRANT':
-        this.router.navigate(['/encadrant/dashboard']);
-        break;
-      case 'ROLE_ADMINISTRATIF':
-        this.router.navigate(['/admin/dashboard']);
-        break;
-      default:
-        this.router.navigate(['/login']);
-        break;
-    }
-  }
+  // Rôles normalisés
+  private readonly ROLE_ENCADRANT = 'ROLE_ENCADRANT';
+  private readonly ROLE_ADMIN = 'ROLE_ADMIN'; // ou 'ROLE_ADMINISTRATIF' selon la config
+  private readonly ROLE_DOCTORANT = 'ROLE_DOCTORANT';
 
-  /**
-   * Normalise les valeurs de rôle renvoyées par le backend vers nos constantes
-   * Exemples : 'CANDIDAT' -> 'ROLE_DOCTORANT'
-   */
-  private normalizeRole(raw: string): string {
-    if (!raw) return raw;
-    const r = raw.toUpperCase();
-    switch (r) {
-      case 'CANDIDAT':
-      case 'ROLE_CANDIDAT':
-      case 'DOCTORANT':
-        return 'ROLE_DOCTORANT';
+  private normalizeRole(role: string): string {
+    switch (role) {
       case 'ENCADRANT':
       case 'ROLE_ENCADRANT':
         return 'ROLE_ENCADRANT';
@@ -100,8 +78,22 @@ export class LoginComponent {
         return 'ROLE_ADMINISTRATIF';
       default:
         // si le backend renvoie déjà une valeur ROLE_..., on la retourne
-        if (r.startsWith('ROLE_')) return r;
-        return r;
+        if (role.startsWith('ROLE_')) return role;
+        return role;
     }
   }
+
+  private redirectByRole(role: string): void {
+    if (role === this.ROLE_ENCADRANT) {
+      this.router.navigate(['/encadrant/dashboard']);
+    } else if (role === this.ROLE_ADMIN) {
+      this.router.navigate(['/admin/dashboard']);
+    } else if (role === this.ROLE_DOCTORANT) {
+      this.router.navigate(['/doctorant/dashboard']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  // ...existing code...
 }

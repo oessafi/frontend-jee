@@ -1,25 +1,20 @@
-
-
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CampagneService } from '../../services/campagne.service';
 import { Campagne } from '../../models/app.models';
 
 @Component({
   selector: 'app-campaigns',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './campaigns.component.html',
   styleUrls: ['./campaigns.component.css']
 })
 export class CampaignsComponent implements OnInit {
-  title = "Gestion des campagnes d'inscription";
   campagnes: Campagne[] = [];
   loading = false;
   error: string | null = null;
   createForm: FormGroup;
   successMessage: string | null = null;
+  title = 'Gestion des campagnes';
 
   constructor(
     private campagneService: CampagneService,

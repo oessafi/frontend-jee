@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
-import * as jwt_decode from 'jwt-decode';
+// CORRECTION ICI : Import nommé requis pour la v4+ de jwt-decode
+import { jwtDecode } from 'jwt-decode';
 import { AuthResponse, User } from '../models/app.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/v1';
+  private apiUrl = 'http://localhost:8080';
   private tokenKey = 'token';
   private userKey = 'user';
 
@@ -21,6 +22,11 @@ export class AuthService {
   }
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  getCurrentUser(): User | null {
+    // Correction : appel direct à la méthode interne
+    return this.getCurrentUserFromStorage();
+  }
 
   login(credentials: { email: string; password: string }): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/users/login`, credentials).pipe(
@@ -77,11 +83,13 @@ export class AuthService {
     if (!token) return null;
 
     try {
-      const decoded: any = (jwt_decode as any)(token);
+      // CORRECTION ICI : Utilisation correcte de la fonction jwtDecode sans casting 'any'
+      const decoded: any = jwtDecode(token);
       const role = decoded.role; 
 
       return typeof role === 'string' ? role : null;
     } catch (e) {
+      console.error('Erreur décodage token', e);
       return null;
     }
   }
